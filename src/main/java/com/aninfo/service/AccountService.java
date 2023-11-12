@@ -11,6 +11,8 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
+import static java.lang.Math.min;
+
 @Service
 public class AccountService {
 
@@ -57,6 +59,11 @@ public class AccountService {
         if (sum <= 0) {
             throw new DepositNegativeSumException("Cannot deposit negative sums");
         }
+
+        if (sum >= 2000) {
+            sum = min(sum * 1.1, sum + 500);
+        }
+
 
         Account account = accountRepository.findAccountByCbu(cbu);
         account.setBalance(account.getBalance() + sum);
